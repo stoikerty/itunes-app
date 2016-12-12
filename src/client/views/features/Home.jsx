@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { stringify } from 'query-string';
 
-import { fetchRequest } from 'src/client/utils';
+import { fetchFromItunes } from 'src/client/utils';
 
 import s from './Home/_style.scss';
 
@@ -15,39 +14,13 @@ export default class Home extends Component {
 
     this.state = {};
 
-    const headers = {
-      X_REQUESTED_WITH: 'XMLHttpRequest',
-      'Content-Type': 'application/json',
-    };
-
-    const itunesOptions = {
+    fetchFromItunes({
       entity: 'software',
       country: 'NL',
       term: 'github',
       limit: 1,
       price: 0,
-    };
-
-    fetchRequest({
-      // url: `https://itunes.apple.com/search${'?term=jack+johnson'}`,
-      url: `/itunes-api/?${stringify(itunesOptions)}`,
-      options: {
-        method: 'GET',
-        headers,
-      },
-
-      onSuccess: ({ json }) => {
-        console.log(json);
-      },
-
-      onError: (err) => {
-        console.log(err);
-      },
-
-      onException: (exc) => {
-        console.log(exc);
-      },
-    });
+    }, (result) => console.log('woop woop', result));
   }
 
   render() {

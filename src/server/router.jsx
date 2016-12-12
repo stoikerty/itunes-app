@@ -11,15 +11,14 @@ import routes from '../client/routes';
 //   Adapted from server-rendering example: https://github.com/rackt/react-router/blob/latest/docs/guides/advanced/ServerRendering.md
 export default (req, res) => {
   if (req.url.startsWith('/itunes-api')) {
-    console.log(req);
     const searchParams = req.query;
     searchitunes(searchParams, (error, data) => {
       if (error) {
-        res.status(400).json({ message: 'Something broke', error });
+        res.status(400).json(error);
         return;
       }
       // All good
-      res.status(200).json({ message: 'All good', data });
+      res.status(200).json(data);
     });
   } else {
     match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
