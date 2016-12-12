@@ -39,7 +39,8 @@ export default class Home extends Component {
       });
 
       fetchFromItunes({
-        media: 'music',
+        media: 'all',
+        entity: 'musicArtist,album,song',
         country: 'GB',
         // attribute: 'musicArtist',
         term: query || 'diplo',
