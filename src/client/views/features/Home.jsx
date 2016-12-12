@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
 
 import { fetchFromItunes } from 'src/client/utils';
+import SearchBar from './Home/SearchBar';
+import FavouritesList from './Home/FavouritesList';
+import ResultsList from './Home/ResultsList';
 
 import s from './Home/_style.scss';
 
@@ -12,14 +14,20 @@ export default class Home extends Component {
 
   constructor(props) {
     super(props);
+    this.toggleList = this.toggleList.bind(this);
     this.search = this.search.bind(this);
 
     this.state = {
       results: [],
       currentPage: 0,
       favourites: [],
+      showFavourites: false,
       isLoading: false,
     };
+  }
+
+  toggleList() {
+    this.setState({ showFavourites: !this.state.showFavourites });
   }
 
   search({ query }) {
@@ -50,13 +58,24 @@ export default class Home extends Component {
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, results, favourites, showFavourites } = this.state;
     return (
       <div className={s.home}>
-        {'Home'}
-        <Button loading={isLoading} onClick={this.search} color="green">
-          {'Click?'}
-        </Button>
+        <SearchBar
+          onSearch={this.search}
+          toggleList={this.toggleList}
+          isLoading={isLoading}
+          showFavourites={showFavourites}
+        />
+
+        <Choose>
+          <When condition={showFavourites}>
+            <FavouritesList favourites={favourites} />
+          </When>
+          <Otherwise condition={showFavourites}>
+            <ResultsList results={results} />
+          </Otherwise>
+        </Choose>
       </div>
     );
   }
