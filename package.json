@@ -21,10 +21,12 @@
     "domready": "^1.0.8",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
+    "query-string": "^4.2.3",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-router": "^2.4.1",
     "redbox-react": "^1.2.8",
+    "searchitunes": "^2.3.2",
     "serve-static": "^1.11.1"
   },
   "devDependencies": {
