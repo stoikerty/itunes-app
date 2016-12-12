@@ -26,6 +26,14 @@ export default class Home extends Component {
     };
   }
 
+  componentWillMount() {
+    this.setState(JSON.parse(localStorage.getItem('itunes-app')));
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    localStorage.setItem('itunes-app', JSON.stringify(nextState));
+  }
+
   toggleList() {
     this.setState({ showFavourites: !this.state.showFavourites });
   }
