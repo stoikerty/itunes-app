@@ -17,15 +17,15 @@ export default (itunesOptions, callback) => {
     },
 
     onSuccess: ({ json }) => {
-      callback(json, 'success');
+      callback({ results: json.results });
     },
 
-    onError: (err) => {
-      callback(err, 'error');
+    onError: () => {
+      callback({ results: null });
     },
 
-    onException: (exc) => {
-      callback(exc, 'exception');
+    onException: () => {
+      callback({ results: null });
     },
   });
 };
