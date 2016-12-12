@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import Item from './shared-components/Item';
+
 export default class ResultsList extends Component {
   static displayName = 'ResultsList'
   static defaultProps = {}
@@ -19,24 +21,42 @@ export default class ResultsList extends Component {
     return (
       <div>
         {'ResultsList'}
-        {results.map(({ wrapperType, artworkUrl100, artistName, collectionName }, index) => (
+        {results.map((
+          {
+            wrapperType,
+            artworkUrl100,
+            artistName,
+            collectionName,
+            artistLinkUrl,
+            trackName,
+          },
+          index
+        ) => (
           <div key={index}>
             <Choose>
               <When condition={wrapperType === 'artist'}>
-                { 'Artist' }
-                { artistName }
+                <Item
+                  type={wrapperType}
+                  title={artistName}
+                  subTitle={artistLinkUrl}
+                />
               </When>
-              <When condition={wrapperType === 'album'}>
-                { '' }
+              <When condition={wrapperType === 'collection'}>
+                <Item
+                  type={wrapperType}
+                  imageUrl={artworkUrl100}
+                  title={collectionName}
+                  subTitle={artistName}
+                />
               </When>
-              <When condition={wrapperType === 'song'}>
-                <img src={artworkUrl100} alt={collectionName} />
-                { artistName }
+              <When condition={wrapperType === 'track'}>
+                <Item
+                  type={wrapperType}
+                  imageUrl={artworkUrl100}
+                  title={trackName}
+                  subTitle={artistName}
+                />
               </When>
-              <Otherwise>
-                <img src={artworkUrl100} alt={collectionName} />
-                { artistName }
-              </Otherwise>
             </Choose>
           </div>
         ))}

@@ -44,11 +44,11 @@ export default class SearchBar extends Component {
                 labelPosition: 'right',
                 icon: 'search',
                 content: 'Search',
+                loading: isLoading,
                 onClick: this.onSearch,
                 type: 'submit',
               }}
               fluid
-              loading={isLoading}
               placeholder="Search..."
               onChange={this.onChange}
             />

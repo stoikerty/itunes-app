@@ -1,0 +1,85 @@
+@import 'style/config';
+
+.item{
+  @include position(relative, block, 100%);
+  float : left;
+  margin : $grid 0 0;
+  padding : $grid;
+
+  // you will see this as transparent-blue
+  // @include proto(1, 0.3);
+  border : 2px solid $brand-blue;
+  background-color : white;
+
+  $imageSize : 100px;
+
+  &:global(.isArtist){
+    border-color : $brand-orange;
+    .type{ background-color: $brand-orange; }
+
+    .image{
+      background-color: $brand-orange;
+
+      >i{
+        @include position(absolute, block);
+        top  : 50%;
+        left : 50%;
+        transform : translate(-50%, -50%) scale(2);
+        color : white;
+      }
+    }
+  }
+  &:global(.isAlbum){
+    border-color : $brand-green;
+    .type{ background-color: $brand-green; }
+  }
+  &:global(.isSong){
+    border-color : $brand-blue;
+    .type{ background-color: $brand-blue; }
+  }
+
+  .image{
+    @include position(relative, block, $imageSize, $imageSize);
+    float : left;
+  }
+
+  .title{
+    @include position(relative, block, 100%);
+    float : left;
+    margin-left : -$imageSize;
+    padding-left : $imageSize + $grid;
+
+    @include font(medium, auto, bold);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .subTitle{
+    @include position(relative, block, 100%);
+    float : left;
+    margin-left : -$imageSize;
+    padding-left : $imageSize + $grid;
+
+    @include font(small, auto);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .favouriteButton{
+    @include position(absolute, block);
+    bottom : $grid;
+    right : $grid - 3px;
+  }
+
+  .type{
+    @include position(absolute, block);
+    bottom : $grid;
+    left : $imageSize + $grid;
+    padding: ($grid / 2) $grid;
+
+    background-color : $brand-blue;
+    @include font(xsmall, white);
+  }
+}
