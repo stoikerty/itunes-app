@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Input, Button, Grid } from 'semantic-ui-react';
+import { Form, Input, Button, Grid } from 'semantic-ui-react';
 
 export default class SearchBar extends Component {
   static displayName = 'SearchBar'
@@ -21,7 +21,8 @@ export default class SearchBar extends Component {
     };
   }
 
-  onSearch() {
+  onSearch(e) {
+    e.preventDefault();
     const { query } = this.state;
     this.props.onSearch({ query });
   }
@@ -36,19 +37,22 @@ export default class SearchBar extends Component {
     return (
       <Grid>
         <Grid.Column width={13}>
-          <Input
-            action={{
-              color: 'green',
-              labelPosition: 'right',
-              icon: 'search',
-              content: 'Search',
-              onClick: this.onSearch,
-            }}
-            fluid
-            loading={isLoading}
-            placeholder="Search..."
-            onChange={this.onChange}
-          />
+          <Form onSubmit={this.onSearch}>
+            <Input
+              action={{
+                color: 'green',
+                labelPosition: 'right',
+                icon: 'search',
+                content: 'Search',
+                onClick: this.onSearch,
+                type: 'submit',
+              }}
+              fluid
+              loading={isLoading}
+              placeholder="Search..."
+              onChange={this.onChange}
+            />
+          </Form>
         </Grid.Column>
         <Grid.Column width={3}>
           <Button
