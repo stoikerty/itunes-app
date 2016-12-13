@@ -84,7 +84,7 @@ export default class Home extends Component {
   render() {
     const { searchStarted, isLoading, results, favourites, showFavourites } = this.state;
     const formattedResults = results.map((item) => {
-      const newItem = item;
+      const newItem = { ...item };
       newItem.isFavourite = favourites.filter((favourite) => isEqual(item, favourite)).length > 0;
       return newItem;
     });
@@ -100,7 +100,7 @@ export default class Home extends Component {
         <Divider />
         <ResultsList
           searchStarted={searchStarted}
-          results={results}
+          results={showFavourites ? favourites : results}
           formattedResults={showFavourites ? favourites : formattedResults}
           saveFavourite={this.saveFavourite}
           showFavourites={showFavourites}

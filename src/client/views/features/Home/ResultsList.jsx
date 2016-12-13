@@ -58,7 +58,7 @@ export default class ResultsList extends Component {
                   title={artistName}
                   subTitle={artistLinkUrl}
                   fullResult={results[index]}
-                  isFavourite={isFavourite}
+                  isFavourite={showFavourites || isFavourite}
                   saveFavourite={saveFavourite}
                 />
               </When>
@@ -69,7 +69,7 @@ export default class ResultsList extends Component {
                   title={collectionName}
                   subTitle={artistName}
                   fullResult={results[index]}
-                  isFavourite={isFavourite}
+                  isFavourite={showFavourites || isFavourite}
                   saveFavourite={saveFavourite}
                 />
               </When>
@@ -80,7 +80,7 @@ export default class ResultsList extends Component {
                   title={trackName}
                   subTitle={artistName}
                   fullResult={results[index]}
-                  isFavourite={isFavourite}
+                  isFavourite={showFavourites || isFavourite}
                   saveFavourite={saveFavourite}
                 />
               </When>
