@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Divider } from 'semantic-ui-react';
+import isEqual from 'lodash.isequal';
 
 import { fetchFromItunes } from 'src/client/utils';
 import SearchBar from './Home/SearchBar';
@@ -24,14 +25,21 @@ export default class Home extends Component {
       favourites: [],
       showFavourites: false,
       isLoading: false,
+      searchStarted: false,
     };
+
+    // set the initial state when app starts
+    localStorage.setItem('itunes-app', JSON.stringify(this.state));
   }
 
   componentWillMount() {
-    this.setState(JSON.parse(localStorage.getItem('itunes-app')));
+    // load state after hot-reloading
+    const previousState = JSON.parse(localStorage.getItem('itunes-app'));
+    this.setState({ ...previousState });
   }
 
   componentWillUpdate(nextProps, nextState) {
+    // keep state when hot-reloading
     localStorage.setItem('itunes-app', JSON.stringify(nextState));
   }
 
@@ -40,7 +48,13 @@ export default class Home extends Component {
   }
 
   saveFavourite(result) {
-    this.setState({ favourites: this.state.favourites.concat(result) });
+    const { favourites } = this.state;
+    const resultExists = favourites.filter((favourite) => isEqual(result, favourite)).length > 0;
+    this.setState({
+      favourites: resultExists
+        ? favourites.filter((favourite) => !isEqual(result, favourite))
+        : favourites.concat(result),
+    });
   }
 
   search({ query }) {
@@ -53,27 +67,28 @@ export default class Home extends Component {
 
       fetchFromItunes({
         media: 'all',
-        entity: 'musicArtist',
+        entity: 'musicArtist,album,song',
         country: 'GB',
-        // attribute: 'musicArtist',
         term: query || 'diplo',
-        // limit: 10,
-        // artist
-        // album
-        // song
       }, ({ results }) => {
         this.setState({
           results: results || [],
           currentPage: 0,
           isLoading: false,
+          searchStarted: true,
         });
       });
     }
   }
 
   render() {
-    const { isLoading, results, favourites, showFavourites } = this.state;
-    const formattedResults = results;
+    const { searchStarted, isLoading, results, favourites, showFavourites } = this.state;
+    const formattedResults = results.map((item) => {
+      const newItem = item;
+      newItem.isFavourite = favourites.filter((favourite) => isEqual(item, favourite)).length > 0;
+      return newItem;
+    });
+
     return (
       <div className={s.home}>
         <SearchBar
@@ -83,23 +98,13 @@ export default class Home extends Component {
           showFavourites={showFavourites}
         />
         <Divider />
-        <Choose>
-          <When condition={showFavourites}>
-            <ResultsList
-              results={results}
-              formattedResults={favourites}
-              saveFavourite={this.saveFavourite}
-              showFavourites={showFavourites}
-            />
-          </When>
-          <Otherwise condition={showFavourites}>
-            <ResultsList
-              results={results}
-              formattedResults={formattedResults}
-              saveFavourite={this.saveFavourite}
-            />
-          </Otherwise>
-        </Choose>
+        <ResultsList
+          searchStarted={searchStarted}
+          results={results}
+          formattedResults={showFavourites ? favourites : formattedResults}
+          saveFavourite={this.saveFavourite}
+          showFavourites={showFavourites}
+        />
       </div>
     );
   }

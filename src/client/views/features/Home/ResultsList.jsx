@@ -7,6 +7,7 @@ export default class ResultsList extends Component {
   static displayName = 'ResultsList'
   static defaultProps = {}
   static propTypes = {
+    searchStarted: PropTypes.bool,
     formattedResults: PropTypes.array,
     results: PropTypes.array,
     showFavourites: PropTypes.bool,
@@ -20,13 +21,22 @@ export default class ResultsList extends Component {
   }
 
   render() {
-    const { formattedResults, results, showFavourites, saveFavourite } = this.props;
+    const { searchStarted, formattedResults, results, showFavourites, saveFavourite } = this.props;
 
     return (
       <div>
-        <Header size="large">
-          {showFavourites ? 'Favourites' : 'Results'}
-        </Header>
+        <If condition={searchStarted && formattedResults.length}>
+          <Header size="medium">
+            {showFavourites ? 'Your Favourites' : 'Search Results'}
+          </Header>
+        </If>
+
+        <If condition={showFavourites && !formattedResults.length}>
+          {'You currently have no favourites.'}
+        </If>
+        <If condition={!showFavourites && searchStarted && !formattedResults.length}>
+          {'No Results have been found.'}
+        </If>
 
         {formattedResults.map((
           {
