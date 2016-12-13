@@ -19,23 +19,17 @@ export default class Home extends Component {
     this.search = this.search.bind(this);
     this.saveFavourite = this.saveFavourite.bind(this);
 
+    // keep favourites around
+    const previousState = JSON.parse(localStorage.getItem('itunes-app'));
+
     this.state = {
       results: [],
       currentPage: 0,
-      favourites: [],
+      favourites: previousState && previousState.favourites ? previousState.favourites : [],
       showFavourites: false,
       isLoading: false,
       searchStarted: false,
     };
-
-    // set the initial state when app starts
-    localStorage.setItem('itunes-app', JSON.stringify(this.state));
-  }
-
-  componentWillMount() {
-    // load state after hot-reloading
-    const previousState = JSON.parse(localStorage.getItem('itunes-app'));
-    this.setState({ ...previousState });
   }
 
   componentWillUpdate(nextProps, nextState) {
