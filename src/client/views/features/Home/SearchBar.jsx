@@ -36,7 +36,7 @@ export default class SearchBar extends Component {
 
     return (
       <Grid>
-        <Grid.Column width={13}>
+        <Grid.Column width={12}>
           <Form onSubmit={this.onSearch}>
             <Input
               action={{
@@ -54,11 +54,12 @@ export default class SearchBar extends Component {
             />
           </Form>
         </Grid.Column>
-        <Grid.Column width={3}>
+        <Grid.Column width={4}>
           <Button
             active={showFavourites}
             onClick={toggleList}
             circular
+            fluid
             icon="star"
             color={showFavourites ? 'blue' : 'grey'}
           />
