@@ -69,7 +69,7 @@ export default class Home extends Component {
         media: 'all',
         entity: 'musicArtist,album,song',
         country: 'GB',
-        term: query || 'diplo',
+        term: query,
       }, ({ results }) => {
         this.setState({
           results: results || [],
