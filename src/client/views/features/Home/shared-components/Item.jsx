@@ -12,7 +12,8 @@ export default class Item extends Component {
     imageUrl: PropTypes.string,
     title: PropTypes.string,
     subTitle: PropTypes.string,
-    id: PropTypes.func,
+    fullResult: PropTypes.object,
+    isFavourite: PropTypes.bool,
     saveFavourite: PropTypes.func,
   }
 
@@ -24,18 +25,18 @@ export default class Item extends Component {
   }
 
   saveFavourite() {
-    const { id } = this.props;
-    this.props.saveFavourite(id);
+    const { fullResult } = this.props;
+    this.props.saveFavourite(fullResult);
   }
 
   render() {
-    const { type, imageUrl, title, subTitle } = this.props;
+    const { type, imageUrl, title, subTitle, isFavourite } = this.props;
     const isArtist = type === 'artist';
     const isAlbum = type === 'collection';
     const isSong = type === 'track';
 
     return (
-      <div className={cx(s.item, { isArtist, isAlbum, isSong })} onClick={this.saveFavourite}>
+      <div className={cx(s.item, { isArtist, isAlbum, isSong })}>
         <div className={s.image}>
           <Choose>
             <When condition={isArtist}>
@@ -54,11 +55,11 @@ export default class Item extends Component {
         </div>
         <div className={s.favouriteButton}>
           <Button
-            active
-            onClick={() => {}}
+            active={isFavourite}
+            onClick={this.saveFavourite}
             circular
             icon="star"
-            color={true ? 'yellow' : 'grey'}
+            color={isFavourite ? 'yellow' : 'grey'}
           />
         </div>
         <div className={s.type}>

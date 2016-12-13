@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Header } from 'semantic-ui-react';
 
 import Item from './shared-components/Item';
 
@@ -6,7 +7,10 @@ export default class ResultsList extends Component {
   static displayName = 'ResultsList'
   static defaultProps = {}
   static propTypes = {
+    formattedResults: PropTypes.array,
     results: PropTypes.array,
+    showFavourites: PropTypes.bool,
+    saveFavourite: PropTypes.func,
   }
 
   constructor(props) {
@@ -16,12 +20,15 @@ export default class ResultsList extends Component {
   }
 
   render() {
-    const { results } = this.props;
+    const { formattedResults, results, showFavourites, saveFavourite } = this.props;
 
     return (
       <div>
-        {'ResultsList'}
-        {results.map((
+        <Header size="large">
+          {showFavourites ? 'Favourites' : 'Results'}
+        </Header>
+
+        {formattedResults.map((
           {
             wrapperType,
             artworkUrl100,
@@ -29,6 +36,7 @@ export default class ResultsList extends Component {
             collectionName,
             artistLinkUrl,
             trackName,
+            isFavourite,
           },
           index
         ) => (
@@ -39,6 +47,9 @@ export default class ResultsList extends Component {
                   type={wrapperType}
                   title={artistName}
                   subTitle={artistLinkUrl}
+                  fullResult={results[index]}
+                  isFavourite={isFavourite}
+                  saveFavourite={saveFavourite}
                 />
               </When>
               <When condition={wrapperType === 'collection'}>
@@ -47,6 +58,9 @@ export default class ResultsList extends Component {
                   imageUrl={artworkUrl100}
                   title={collectionName}
                   subTitle={artistName}
+                  fullResult={results[index]}
+                  isFavourite={isFavourite}
+                  saveFavourite={saveFavourite}
                 />
               </When>
               <When condition={wrapperType === 'track'}>
@@ -55,6 +69,9 @@ export default class ResultsList extends Component {
                   imageUrl={artworkUrl100}
                   title={trackName}
                   subTitle={artistName}
+                  fullResult={results[index]}
+                  isFavourite={isFavourite}
+                  saveFavourite={saveFavourite}
                 />
               </When>
             </Choose>

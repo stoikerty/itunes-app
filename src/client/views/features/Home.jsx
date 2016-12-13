@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { Divider } from 'semantic-ui-react';
 
 import { fetchFromItunes } from 'src/client/utils';
 import SearchBar from './Home/SearchBar';
-import FavouritesList from './Home/FavouritesList';
+// import FavouritesList from './Home/FavouritesList';
 import ResultsList from './Home/ResultsList';
 
 import s from './Home/_style.scss';
@@ -16,6 +17,7 @@ export default class Home extends Component {
     super(props);
     this.toggleList = this.toggleList.bind(this);
     this.search = this.search.bind(this);
+    this.saveFavourite = this.saveFavourite.bind(this);
 
     this.state = {
       results: [],
@@ -38,6 +40,10 @@ export default class Home extends Component {
     this.setState({ showFavourites: !this.state.showFavourites });
   }
 
+  saveFavourite(result) {
+    this.setState({ favourites: this.state.favourites.concat(result) });
+  }
+
   search({ query }) {
     const { isLoading } = this.state;
 
@@ -48,7 +54,7 @@ export default class Home extends Component {
 
       fetchFromItunes({
         media: 'all',
-        entity: 'musicArtist,album,song',
+        entity: 'musicArtist',
         country: 'GB',
         // attribute: 'musicArtist',
         term: query || 'diplo',
@@ -68,6 +74,7 @@ export default class Home extends Component {
 
   render() {
     const { isLoading, results, favourites, showFavourites } = this.state;
+    const formattedResults = results;
     return (
       <div className={s.home}>
         <SearchBar
@@ -76,13 +83,22 @@ export default class Home extends Component {
           isLoading={isLoading}
           showFavourites={showFavourites}
         />
-
+        <Divider />
         <Choose>
           <When condition={showFavourites}>
-            <FavouritesList favourites={favourites} />
+            <ResultsList
+              results={results}
+              formattedResults={favourites}
+              saveFavourite={this.saveFavourite}
+              showFavourites={showFavourites}
+            />
           </When>
           <Otherwise condition={showFavourites}>
-            <ResultsList results={results} />
+            <ResultsList
+              results={results}
+              formattedResults={formattedResults}
+              saveFavourite={this.saveFavourite}
+            />
           </Otherwise>
         </Choose>
       </div>
