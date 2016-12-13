@@ -3,7 +3,6 @@ import { Divider } from 'semantic-ui-react';
 
 import { fetchFromItunes } from 'src/client/utils';
 import SearchBar from './Home/SearchBar';
-// import FavouritesList from './Home/FavouritesList';
 import ResultsList from './Home/ResultsList';
 
 import s from './Home/_style.scss';
